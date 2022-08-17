@@ -1,0 +1,25 @@
+.loginContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 4rem;
+}
+.loginCard {
+  width: 25vw;
+  margin-top: 5%;
+}
+.logo {
+  margin-top: 1.5rem;
+}
+.logo > img {
+  width: 12vw;
+}
+.imgCar {
+  margin-top: 3.5rem;
+  height: 36.875rem;
+  width: 27.5625rem;
+  /* for the carsouel  */
+  position: relative;
+}
+.car {
+  position: absolute;
+}

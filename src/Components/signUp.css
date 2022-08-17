@@ -1,0 +1,14 @@
+.signUpContainer {
+  display: flex;
+  justify-content: center;
+}
+.signUpCard {
+  width: 25vw;
+  margin-top: 5%;
+}
+.logo {
+  margin-top: 1.5rem;
+}
+.logo > img {
+  width: 12vw;
+}
