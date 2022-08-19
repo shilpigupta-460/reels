@@ -1,6 +1,6 @@
 import firebase from "firebase/compat/app";
+import { getAuth } from "firebase/auth";
 import "firebase/compat/auth"; //authorization
-
 import "firebase/compat/storage";
 import "firebase/compat/firestore"; // db
 import { serverTimestamp } from "firebase/firestore";

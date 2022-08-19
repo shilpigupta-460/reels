@@ -1,7 +1,7 @@
 import * as React from "react";
-import { useContext, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../Context/AuthContext";
+import { UserAuth } from "../Context/AuthContext";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -43,14 +43,14 @@ export default function Login() {
         },
     })
     const classes = styles(); // 3)
-    const store = useContext(AuthContext);
+
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     const history = useNavigate();
-    const { login } = useContext(AuthContext);
+    const { user, login } = UserAuth();
 
 
     const handleforgetP = () => {
@@ -59,20 +59,31 @@ export default function Login() {
         //console.log(" done");
     };
 
-    // useEffect(() => {
-    //     if (user)
-    //         history("/");
-    //     console.log(user);
-    // }, [user, history]);
 
     const handleLogin = async () => {
+
+        // if (user) {
+        //     history('/')
+
+        // } else {
+        //     history('/login')
+        // }
+
         try {
             setError(" ");
             setLoading(true);
-            let user = await login(email, password);
+            let res = await login(email, password);
 
-            setLoading(false);
             history("/");
+            setLoading(false);
+
+
+
+
+
+            // console.log("login done");
+            // history("/");
+            // console.log("login done");
 
             // ((userCredential) => {
             //     const user = userCredential.userObj;
@@ -124,8 +135,9 @@ export default function Login() {
                     <CardContent>
                         { error !== "" && (
                             <Alert severity="error" margin="dense">
-                                { error }
+                                { error.toString() }
                             </Alert>
+
                         ) }
                         <TextField
                             id="outlined-basic"
@@ -157,8 +169,7 @@ export default function Login() {
                                 style={ { textDecoration: "none" } }
                                 onClick={ handleforgetP }
                             >
-                                { " " }
-                                Forgot Password?{ " " }
+                                Forgot Password?
                             </Link>
                         </Typography>
                     </CardContent>
@@ -168,9 +179,9 @@ export default function Login() {
                             fullWidth
                             variant="contained"
                             onClick={ handleLogin }
-                            dislabed={ loading }
+                            dislabed={ loading.toString() }
                         >
-                            Login
+                            <Link to="/" className="underline">Login</Link>
                         </Button>
                     </CardActions>
                     <CardContent></CardContent>

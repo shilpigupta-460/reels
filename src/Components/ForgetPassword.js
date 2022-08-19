@@ -10,7 +10,7 @@ import TextField from '@mui/material/TextField';
 //import CloudUploadIcon from '@mui/@material-ui/icons/CloudIcon';
 //import CloudUploadIcon from '@material-ui/icons/CloudUploadIcon';
 import { Link, useNavigate } from 'react-router-dom';
-import { AuthContext } from '../Context/AuthContext';
+import { UserAuth } from '../Context/AuthContext';
 import { useAuthValue } from '../Context/AuthContext';
 import "./signUp.css";
 import logo from '../assert/logo.png';
@@ -39,7 +39,7 @@ export default function forgotPasswaord() {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const history = useNavigate();
-    const { forgetPassword } = useContext(AuthContext);
+    const { forgetPassword } = (UserAuth);
 
     const handleClick = async () => {
         if (email == null) {

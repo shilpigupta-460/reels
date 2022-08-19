@@ -7,14 +7,13 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Alert from "@mui/material/Alert";
 import TextField from "@mui/material/TextField";
-import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../Context/AuthContext";
-
 import "./signUp.css";
 import logo from "../assert/logo.png";
 import { styled } from "@mui/material/styles"; // 1) styleing way in @mui
 import { Store } from "@material-ui/icons";
 
+import { Link, useNavigate } from "react-router-dom";
+import { UserAuth } from "../Context/AuthContext";
 import { database, storage } from "../firebase";
 
 export default function Signup() {
@@ -33,14 +32,14 @@ export default function Signup() {
     // const { store } = useAuthValue();
 
     const classes = styles(); // 3)
-    const [email, setEmail] = useState("");
+    const [email, setEmail] = useState(null);
     const [password, setPassword] = useState("");
     const [fname, setFname] = useState("");
     const [file, setFile] = useState(null);
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     const history = useNavigate();
-    const { signup } = useContext(AuthContext);
+    const { signup } = UserAuth();
 
     const handleClick = async () => {
         if (file == null) {
@@ -54,9 +53,11 @@ export default function Signup() {
             setError("");
             setLoading(true);
             let userObj = await signup(email, password);
-            console.log(userObj);
+            history("/");
+            // console.log(userObj);
             let userId = userObj.user.uid;
             console.log(`userId: ${userId}`);
+
             const uploadTask = storage.ref(`/users/${userId}/ProfileImage`).put(file);
             uploadTask.on("state_changed", fn1, fn2, fn3);
 
@@ -88,11 +89,11 @@ export default function Signup() {
                     console.log(url);
                 });
                 setLoading(false);
-                history("/");
+
             }
         }
         catch (err) {
-            console.log(err);
+            console.log(err.message);
             setError(err);
             setTimeout(() => {
                 setError("");
@@ -179,7 +180,7 @@ export default function Signup() {
                             disabled={ loading }
                             onClick={ handleClick }
                         >
-                            SignUp
+                            <Link to="/" className="underline">Sign up</Link>
                         </Button>
                     </CardActions>
                     <CardContent>

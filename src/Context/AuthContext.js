@@ -1,8 +1,15 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { auth } from '../firebase';
 
+import {
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    onAuthStateChanged,   // check user loggIn and protected route
+    signOut
+}
+    from "firebase/auth";
+const AuthContext = React.createContext();
 
-export const AuthContext = React.createContext();
 
 export function AuthProvider({ children }) {
     const [user, setUser] = useState();
@@ -13,6 +20,20 @@ export function AuthProvider({ children }) {
         return auth.createUserWithEmailAndPassword(email, password);
 
     }
+    // componentDid Mount
+    useEffect(() => {
+        const unsub = auth.onAuthStateChanged((currentUser) => {
+
+            setUser(currentUser);
+            console.log(user)
+            setLoading(false);
+
+        })
+        // componentDidUnMount
+        return () => {
+            unsub();
+        }
+    }, [user])
     function login(email, password) {
         return auth.signInWithEmailAndPassword(email, password);
 
@@ -20,7 +41,6 @@ export function AuthProvider({ children }) {
     const forgetPassword = (email) => {
         auth.sendPasswordResetEmail(email).then(() => {
             setUser(null);
-
         })
 
     }
@@ -28,37 +48,19 @@ export function AuthProvider({ children }) {
     //     return auth.sendPasswordResetEmail(email)
 
     // }
-    const logout = () => {
+    const signout = () => {
         auth.signOut()
         // setUser(null);
     }
 
 
-    // componentDid Mount
-    useEffect(() => {
-        const unsub = auth.onAuthStateChanged((user) => {
-            if (user)
-            // console.log(user)
-            {
-                setUser(user);
-                setLoading(false);
-            }
-            else {
-                setUser(null)
-            }
 
-        })
-        // componentDidUnMount
-        return () => {
-            unsub();
-        }
-    }, [])
 
     const store = {
         user,
         signup,
         login,
-        logout,
+        signout,
         forgetPassword,
     }
     return (
@@ -67,6 +69,6 @@ export function AuthProvider({ children }) {
         </AuthContext.Provider>
     )
 }
-// export function useAuthValue() {
-//     return useContext(AuthContext)
-// 
+export const UserAuth = () => {   // make our context UserContext avaliable throughtout app
+    return useContext(AuthContext)
+}
