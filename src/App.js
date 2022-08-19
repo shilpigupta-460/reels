@@ -19,7 +19,7 @@ function App() {
     <BrowserRouter>
       <AuthProvider>
         <Routes>
-          <Route path="/" element={ <Feed /> } />
+          {/* <Route path="/" element={ <Feed /> } /> */ }
           <Route path="/signup" element={ <Signup /> } />
           <Route path="/login" element={ <Login /> } />
           <Route path="/reset" element={ <ForgetPassword /> } />

@@ -60,6 +60,7 @@ export default function UploadFile(props) {
                     userId: props.user.userId,
                     createAt: database.getTimeStamp
                 }
+
                 database.posts.add(obj).then((ref) => {
                     let res = database.users.doc(props.user.uid).update({
                         postIds: props.user.postIds != null ? [...props.user.postIds.ref.id] : [ref.id]

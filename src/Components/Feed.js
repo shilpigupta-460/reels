@@ -8,7 +8,7 @@ import { database } from "../firebase"
 import Posts from "./Posts"
 function Feed() {
     const { user, signout } = UserAuth();
-    // const [userData, setUserData] = useState(user)
+    const [userData, setUserData] = useState(user)
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const history = useNavigate();
@@ -50,10 +50,10 @@ function Feed() {
 
                     <h1> User Email:{ user && user.email }</h1>
 
-                    <button onClick={ handleLogout }><Link to="/login"> Logout</Link></button>
+                    <button onClick={ signout }><Link to="/login"> Logout</Link></button>
                 </div>
                 <UploadFile user={ user } />
-                {/* <Posts user={ userData } /> */ }
+                <Posts user={ userData } />
             </div>
         </>
 
