@@ -1,7 +1,7 @@
 import React from 'react'
 import logo from '../assert/logo.png';
 import { UserAuth } from '../Context/AuthContext';
-import { useContext, useState, useEffect } from 'react';
+import {  useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import UploadFile from "./UploadFile"
 import { database } from "../firebase"
@@ -12,7 +12,14 @@ function Feed() {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const history = useNavigate();
-    console.log(user);
+    console.log(userData);
+    useEffect(() => {
+        const unsub = database.users.doc(user.uid).onSnapshot((snapshot) => 
+        { setUserData(snapshot.data()) })
+        return () => 
+            { unsub() }
+        
+    }, [user])
 
     const handleLogout = async () => {
 
@@ -45,15 +52,17 @@ function Feed() {
 
                 <div className="container" style={ { width: '50%', border: '1px solid black' } }>
                     <div >
-                        <img src={ logo } style={ { width: '20%' } } />
+                        <img src={ logo } style={ { width: '20%' } } alt="logo" />
                     </div>
 
                     <h1> User Email:{ user && user.email }</h1>
 
-                    <button onClick={ signout }><Link to="/login"> Logout</Link></button>
+                    <button onClick={ handleLogout }><Link to="/login"> Logout</Link></button>
                 </div>
-                <UploadFile user={ user } />
-                <Posts user={ userData } />
+                <UploadFile user={ userData } />
+               
+                 <Posts userData={ userData } /> 
+                
             </div>
         </>
 

@@ -55,10 +55,10 @@ export default function Signup() {
             let userObj = await signup(email, password);
             history("/");
             // console.log(userObj);
-            let userId = userObj.user.uid;
-            console.log(`userId: ${userId}`);
+            let uid = userObj.user.uid;
+            console.log(`userId: ${uid}`);
 
-            const uploadTask = storage.ref(`/users/${userId}/ProfileImage`).put(file);
+            const uploadTask = storage.ref(`/users/${uid}/ProfileImage`).put(file);
             uploadTask.on("state_changed", fn1, fn2, fn3);
 
             function fn1(snapshot) {
@@ -79,9 +79,9 @@ export default function Signup() {
             function fn3() {
                 uploadTask.snapshot.ref.getDownloadURL().then((url) => {
 
-                    database.users.doc(userId).set({
+                    database.users.doc(uid).set({
                         email: email,
-                        userId: userId,
+                        userId: uid,
                         fname: fname,
                         profileUrl: url,
                         createdAt: database.getTimeStamp,
